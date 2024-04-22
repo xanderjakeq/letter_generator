@@ -5,6 +5,7 @@ import (
 	"log"
 	"math/rand/v2"
 	"os"
+	"strconv"
 	"strings"
 	"sync"
 	"time"
@@ -26,28 +27,11 @@ import (
 func main() {
 	letters := make([]Letter, 0)
 
-	letters = append(letters,
-		Letter{
-			Name:            "Joe T",
-			Street_address:  "123 X street",
-			City_address:    "City, MD 10034",
-			Donation_amount: 500,
-			Donation_date:   "4/21/2024",
-		},
-		Letter{
-			Name:            "Jen",
-			Street_address:  "123 X street",
-			City_address:    "City, MD 10034",
-			Donation_amount: 500,
-			Donation_date:   "4/21/2024",
-		},
-		Letter{
-			Name:            "Ben last",
-			Street_address:  "123 X street",
-			City_address:    "City, MD 10034",
-			Donation_amount: 500,
-			Donation_date:   "4/21/2024",
-		})
+	if len(os.Args) > 1 {
+		readFileInput(&letters)
+	} else {
+		log.Fatal("input file path required. example: './input.txt'")
+	}
 
 	var wg sync.WaitGroup
 
@@ -60,6 +44,33 @@ func main() {
 	}
 
 	wg.Wait()
+}
+
+func readFileInput(l *[]Letter) {
+	input_path := os.Args[1]
+
+	byte, err := os.ReadFile(input_path)
+
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	file_strings := strings.Split(strings.Trim(string(byte), "\n"), "\n\n")
+
+	for _, data := range file_strings {
+		letter_data := strings.Split(data, "\n")
+
+		donation_amount, _ := strconv.ParseFloat(letter_data[4], 32)
+
+		*l = append(*l, Letter{
+			Name:            letter_data[0],
+			Company:         letter_data[1],
+			Street_address:  letter_data[2],
+			City_address:    letter_data[3],
+			Donation_amount: float32(donation_amount),
+			Donation_date:   letter_data[5],
+		})
+	}
 }
 
 type Letter struct {
@@ -151,6 +162,8 @@ func (l *Letter) generalLetterTemplate(today string) {
 	l.maroto.AddRow(vert_gap)
 
 	l.maroto.AddRow(5, text.NewCol(col_width, fmt.Sprintf("Dear %s,", strings.Split(l.Name, " ")[0]), text_prop))
+
+	l.maroto.AddRow(vert_gap)
 
 	l.maroto.AddRow(14,
 		text.NewCol(

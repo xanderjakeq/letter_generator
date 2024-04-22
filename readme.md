@@ -13,6 +13,30 @@ spend less time editing letter templates in ms word.
       deploying/managing a website
     - explore later
 
+## usage
+
+### cli
+write the input file and save it as `whatever.txt`
+
+format:
+```
+name
+street_address
+city_address
+donation_amount
+donation_date
+
+...
+```
+each entry separated by a an empty line
+
+generate pdfs
+```
+./letter_generator ./whatever.txt
+```
+
+output pdfs are placed in a directory named `output_today's_date/`
+
 ## dev
 
 [maroto](https://github.com/johnfercher/maroto)
@@ -20,3 +44,4 @@ spend less time editing letter templates in ms word.
 
 [htmx](https://htmx.org/)
 - ui
+
