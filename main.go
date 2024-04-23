@@ -39,7 +39,7 @@ func main() {
 		wg.Add(1)
 		go func(l *Letter) {
 			defer wg.Done()
-			l.Generate(0)
+			l.Generate()
 		}(&letter)
 	}
 
@@ -60,15 +60,21 @@ func readFileInput(l *[]Letter) {
 	for _, data := range file_strings {
 		letter_data := strings.Split(data, "\n")
 
-		donation_amount, _ := strconv.ParseFloat(letter_data[4], 32)
+		if len(letter_data) != 7 {
+			log.Fatal("incomplete input")
+		}
+
+		template_id, _ := strconv.ParseInt(letter_data[0], 10, 32)
+		donation_amount, _ := strconv.ParseFloat(letter_data[5], 32)
 
 		*l = append(*l, Letter{
-			Name:            letter_data[0],
-			Company:         letter_data[1],
-			Street_address:  letter_data[2],
-			City_address:    letter_data[3],
+			Temlate_id:      int(template_id),
+			Name:            letter_data[1],
+			Company:         letter_data[2],
+			Street_address:  letter_data[3],
+			City_address:    letter_data[4],
 			Donation_amount: float32(donation_amount),
-			Donation_date:   letter_data[5],
+			Donation_date:   letter_data[6],
 		})
 	}
 }
@@ -83,14 +89,15 @@ type Letter struct {
 	City_address    string
 	Donation_amount float32
 	Donation_date   string
+	Temlate_id      int
 }
 
-func (l *Letter) Generate(template int) {
+func (l *Letter) Generate() {
 	l.GetMaroto()
 
 	today := time.Now().Local().Format("January 02, 2006")
 
-	switch template {
+	switch l.Temlate_id {
 	default:
 		l.generalLetterTemplate(today)
 	}
@@ -131,6 +138,17 @@ func (l *Letter) GetMaroto() {
 	l.maroto = maroto.New(cfg)
 }
 
+func getFirstNames(name_string string) string {
+	fullnames := strings.Split(name_string, "&")
+	firstnames := make([]string, 0)
+	for _, fullname := range fullnames {
+		fullname = strings.Trim(fullname, " ")
+		firstnames = append(firstnames, strings.Split(fullname, " ")[0])
+	}
+
+	return strings.Join(firstnames, " & ")
+}
+
 func (l *Letter) generalLetterTemplate(today string) {
 	if l.maroto == nil {
 		log.Fatal("letter maroto is nil")
@@ -153,7 +171,7 @@ func (l *Letter) generalLetterTemplate(today string) {
 	l.maroto.AddRow(vert_gap)
 
 	l.maroto.AddRow(5, text.NewCol(col_width, l.Name, text_prop))
-	if l.Company != "" {
+	if l.Company != "-" {
 		l.maroto.AddRow(5, text.NewCol(col_width, l.Company, text_prop))
 	}
 	l.maroto.AddRow(5, text.NewCol(col_width, l.Street_address, text_prop))
@@ -161,7 +179,7 @@ func (l *Letter) generalLetterTemplate(today string) {
 
 	l.maroto.AddRow(vert_gap)
 
-	l.maroto.AddRow(5, text.NewCol(col_width, fmt.Sprintf("Dear %s,", strings.Split(l.Name, " ")[0]), text_prop))
+	l.maroto.AddRow(5, text.NewCol(col_width, fmt.Sprintf("Dear %s,", getFirstNames(l.Name)), text_prop))
 
 	l.maroto.AddRow(vert_gap)
 
