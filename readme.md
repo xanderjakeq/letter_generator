@@ -20,11 +20,12 @@ write the input file and save it as `whatever.txt`
 
 format:
 ```
+template_id
 name
+company_name (`-` if none)
 street_address
 city_address
-donation_amount
-donation_date
+donation_amount donation_date
 
 ...
 ```
