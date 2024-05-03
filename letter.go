@@ -28,24 +28,24 @@ type Letter struct {
 	maroto   core.Maroto
 	document core.Document
 
-	Name            string
-	Company         string
-	Street_address  string
-	City_address    string
-	Donation_amount float32
-	Donation_date   string
-	Temlate_id      int
+	Name               string
+	Company            string
+	Street_address     string
+	City_address       string
+	Donation_amount    float32
+	Donation_date      string
+	Template_file_name string
 }
 
 func (l *Letter) Generate() {
-	l.GetMaroto()
-
 	today := time.Now().Local().Format("January 02, 2006")
+	template := getTemplate(l.Template_file_name)
 
-	l.renderTemplate(today)
+	l.GetMaroto(template)
+
+	l.renderTemplate(template, today)
 
 	dir_name := fmt.Sprintf("output_%s", strings.ReplaceAll(today, " ", "_"))
-
 	err := os.MkdirAll(fmt.Sprintf("./%s", dir_name), os.ModePerm)
 
 	if err != nil {
@@ -68,17 +68,29 @@ func (l *Letter) Generate() {
 	}
 }
 
-func (l *Letter) GetMaroto() {
-	bytes, err := os.ReadFile("./joes_graphic.jpg")
+func (l *Letter) GetMaroto(t Template) {
+    //todo: move setup processing to template struct
+	bg_path := strings.Trim(strings.Split(t.Setup, ":")[1], " \n")
+	bytes, err := os.ReadFile(bg_path)
 
 	if err != nil {
 		log.Fatal(err)
 	}
 
+	bg_ext := strings.Split(bg_path, ".")[1]
+	ext := extension.Png
+
+	switch strings.ToLower(bg_ext) {
+	case "jpeg":
+		ext = extension.Jpeg
+	case "jpg":
+		ext = extension.Jpg
+	}
+
 	cfg := config.NewBuilder().
 		WithDimensions(216, 279.5).
 		WithMargins(0, 0, 0).
-		WithBackgroundImage(bytes, extension.Jpg).
+		WithBackgroundImage(bytes, ext).
 		Build()
 
 	l.maroto = maroto.New(cfg)
@@ -94,14 +106,12 @@ var valid_fields = []string{
 	"donation_date",
 }
 
-func (l *Letter) renderTemplate(today string) {
+func (l *Letter) renderTemplate(t Template, today string) {
 	if l.maroto == nil {
 		log.Fatal("letter maroto is nil")
 	}
 
-	template := getTemplate("general_ty")
-
-	for _, field := range template.Fields {
+	for _, field := range t.Fields {
 		trim_field := strings.Trim(field, "[]")
 
 		var val string
@@ -129,7 +139,7 @@ func (l *Letter) renderTemplate(today string) {
 			val = trim_field
 		}
 
-		template.Content = strings.ReplaceAll(template.Content, field, val)
+		t.Content = strings.ReplaceAll(t.Content, field, val)
 	}
 
 	col_width := 12
@@ -152,7 +162,7 @@ func (l *Letter) renderTemplate(today string) {
 	l.maroto.AddRow(5, mtext.NewCol(col_width, today, text_prop))
 	l.maroto.AddRow(vert_gap)
 
-	for _, block := range strings.Split(template.Content, "\n\n") {
+	for _, block := range strings.Split(t.Content, "\n\n") {
 		leading := 5.0
 		for _, line := range strings.Split(block, "\n") {
 			prop := text_prop
@@ -168,7 +178,7 @@ func (l *Letter) renderTemplate(today string) {
 					if len(line) == 1 {
 						continue
 					}
-				case '.':
+				case '.', '/':
 					_, err := os.Stat(line)
 
 					if err == nil {

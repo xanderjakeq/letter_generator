@@ -25,19 +25,17 @@ func readFileInput(l *[]Letter) {
 			log.Fatal("incomplete input")
 		}
 
-        donation := strings.Split(letter_data[5], " ")
-
-		template_id, _ := strconv.ParseInt(letter_data[0], 10, 32)
+		donation := strings.Split(letter_data[5], " ")
 		donation_amount, _ := strconv.ParseFloat(donation[0], 32)
 
 		*l = append(*l, Letter{
-			Temlate_id:      int(template_id),
-			Name:            letter_data[1],
-			Company:         letter_data[2],
-			Street_address:  letter_data[3],
-			City_address:    letter_data[4],
-			Donation_amount: float32(donation_amount),
-			Donation_date:   donation[1],
+			Template_file_name: letter_data[0],
+			Name:               letter_data[1],
+			Company:            letter_data[2],
+			Street_address:     letter_data[3],
+			City_address:       letter_data[4],
+			Donation_amount:    float32(donation_amount),
+			Donation_date:      donation[1],
 		})
 	}
 }
