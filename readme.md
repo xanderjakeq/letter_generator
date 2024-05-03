@@ -31,6 +31,10 @@ bg: /bg_path/bg.png
 
 [./image_path.jpg]
 [/another_image_path.jpg]
+
+*bold text*
+
+`small text`
 ```
 all between `---` are for setup
 
