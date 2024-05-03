@@ -15,12 +15,36 @@ spend less time editing letter templates in ms word.
 
 ## usage
 
+### templating
+```
+---
+bg: /bg_path/bg.png
+---
+
+[name]
+[first_names]
+[company]
+[street_address]
+[city_address]
+[donation_amount]
+[donation_date]
+
+[./image_path.jpg]
+[/another_image_path.jpg]
+```
+all between `---` are for setup
+
+all valid variables like `[name]` will be replaced with value from the entry
+file. others will be treated as a path to an image. everything else will be kept
+
+paragraphs should be written in one line
+
 ### cli
 write the input file and save it as `whatever.txt`
 
 format:
 ```
-template_id
+template_file_name
 name
 company_name (`-` if none)
 street_address
