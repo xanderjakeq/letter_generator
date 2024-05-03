@@ -169,6 +169,7 @@ func (l *Letter) renderTemplate(t Template, today string) {
 			if len(line) > 0 {
 				switch line[0] {
 				case '*':
+					line = strings.Trim(line, "*")
 					prop = text_prop_emphasis
 					leading += 5
 				case '`':
