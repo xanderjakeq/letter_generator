@@ -5,6 +5,7 @@ import (
 	"log"
 	"os"
 	"slices"
+	"strconv"
 	"strings"
 	"time"
 
@@ -69,7 +70,7 @@ func (l *Letter) Generate() {
 }
 
 func (l *Letter) GetMaroto(t Template) {
-    //todo: move setup processing to template struct
+	//todo: move setup processing to template struct
 	bg_path := strings.Trim(strings.Split(t.Setup, ":")[1], " \n")
 	bytes, err := os.ReadFile(bg_path)
 
@@ -180,10 +181,17 @@ func (l *Letter) renderTemplate(t Template, today string) {
 						continue
 					}
 				case '.', '/':
-					_, err := os.Stat(line)
+                    height_split := strings.Split(line, "|")
+                    path := height_split[0]
+					_, err := os.Stat(path)
 
 					if err == nil {
-						l.maroto.AddRow(10, image.NewFromFileCol(10, line, props.Rect{Left: text_x, Percent: 100}))
+						height := 10.0
+
+						if len(height_split) > 1 {
+							height, _ = strconv.ParseFloat(height_split[1], 64)
+						}
+						l.maroto.AddRow(height, image.NewFromFileCol(12, path, props.Rect{Left: text_x, Percent: 100}))
 					}
 					continue
 				}
