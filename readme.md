@@ -16,6 +16,7 @@ spend less time editing letter templates in ms word.
 ## usage
 
 ### templating
+create `.md` files in the `templates/` folder
 ```
 ---
 bg: /bg_path/bg.png
@@ -29,8 +30,8 @@ bg: /bg_path/bg.png
 [donation_amount]
 [donation_date]
 
-[./image_path.jpg]
-[/another_image_path.jpg]
+[./image_path.jpg|10]
+[/another_image_path.jpg|30]
 
 *bold text*
 
@@ -39,7 +40,8 @@ bg: /bg_path/bg.png
 all between `---` are for setup
 
 all valid variables like `[name]` will be replaced with value from the entry
-file. others will be treated as a path to an image. everything else will be kept
+file. others will be treated as a path to an image. the `|30` for the image path
+is the custom height (10 by default). everything else will be kept
 
 paragraphs should be written in one line
 
@@ -58,6 +60,9 @@ donation_amount donation_date
 ...
 ```
 each entry separated by a an empty line
+
+to add a nickname, to use instead of the firstname, do `firstname|nickname
+lastname` on the name line
 
 generate pdfs
 ```
