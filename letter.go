@@ -28,7 +28,7 @@ type Letter struct {
 	maroto   core.Maroto
 	document core.Document
 
-	Name               string
+	Name               [2]string
 	Company            string
 	Street_address     string
 	City_address       string
@@ -59,7 +59,7 @@ func (l *Letter) Generate() {
 	err = l.document.Save(
 		fmt.Sprintf("./%s/ty_%s_%s_%d.pdf",
 			dir_name,
-			l.Name,
+			l.Name[1],
 			today,
 			rand.IntN(10000)))
 
@@ -97,8 +97,8 @@ func (l *Letter) GetMaroto(t Template) {
 }
 
 var valid_fields = []string{
-	"name",
 	"first_names",
+	"name",
 	"company",
 	"street_address",
 	"city_address",
@@ -120,9 +120,9 @@ func (l *Letter) renderTemplate(t Template, today string) {
 		case true:
 			switch trim_field {
 			case valid_fields[0]:
-				val = l.Name
+				val = l.Name[0]
 			case valid_fields[1]:
-				val = getFirstNames(l.Name)
+				val = l.Name[1]
 			case valid_fields[2]:
 				val = l.Company
 			case valid_fields[3]:

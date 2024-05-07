@@ -30,7 +30,7 @@ func readFileInput(l *[]Letter) {
 
 		*l = append(*l, Letter{
 			Template_file_name: letter_data[0],
-			Name:               letter_data[1],
+			Name:               processNames(letter_data[1]),
 			Company:            letter_data[2],
 			Street_address:     letter_data[3],
 			City_address:       letter_data[4],
@@ -40,13 +40,24 @@ func readFileInput(l *[]Letter) {
 	}
 }
 
-func getFirstNames(name_string string) string {
+func processNames(name_string string) [2]string {
 	fullnames := strings.Split(name_string, "&")
 	firstnames := make([]string, 0)
-	for _, fullname := range fullnames {
+	for i, fullname := range fullnames {
 		fullname = strings.Trim(fullname, " ")
-		firstnames = append(firstnames, strings.Split(fullname, " ")[0])
+		fullname_split := strings.Split(fullname, " ")
+		firstname := fullname_split[0]
+		nickname := strings.Split(firstname, "|")
+
+		if len(nickname) == 2 {
+			firstnames = append(firstnames, nickname[1])
+		} else {
+			firstnames = append(firstnames, firstname)
+		}
+
+		fullname_split[0] = nickname[0]
+		fullnames[i] = strings.Join(fullname_split, " ")
 	}
 
-	return strings.Join(firstnames, " & ")
+	return [2]string{strings.Join(firstnames, " & "), strings.Join(fullnames, " & ")}
 }
