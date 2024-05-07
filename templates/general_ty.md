@@ -20,11 +20,13 @@ On behalf of everyone at Joe’s Movement Emporium, I want to thank you for your
 - Creative Residencies/Performances
 
 *Please retain this letter for your records as it confirms that no gifts or services were received in exchange for your donation, which is fully tax-deductible.*
+
 I look forward to seeing you at Joe’s!
 
-[./signature.png]
-
 Yours truly,
+
+[./signature.png|10]
+
 Brooke Kidd
 Executive Director
 
