@@ -105,6 +105,7 @@ var valid_fields = []string{
 	"city_address",
 	"donation_amount",
 	"donation_date",
+	"today",
 }
 
 func (l *Letter) renderTemplate(t Template, today string) {
@@ -134,11 +135,14 @@ func (l *Letter) renderTemplate(t Template, today string) {
 				val = fmt.Sprintf("%.2f", l.Donation_amount)
 			case valid_fields[6]:
 				val = l.Donation_date
+			case valid_fields[7]:
+				val = today
 			}
 
 		case false:
 			val = trim_field
 		}
+        fmt.Println(val, field)
 
 		t.Content = strings.ReplaceAll(t.Content, field, val)
 	}
@@ -159,9 +163,8 @@ func (l *Letter) renderTemplate(t Template, today string) {
 	text_prop_small := text_prop
 	text_prop_small.Size = 9
 
+    //todo: should i keep this or leave this spacing to the template
 	l.maroto.AddRow(40)
-	l.maroto.AddRow(5, mtext.NewCol(col_width, today, text_prop))
-	l.maroto.AddRow(vert_gap)
 
 	for _, block := range strings.Split(t.Content, "\n\n") {
 		leading := 5.0

@@ -1,6 +1,9 @@
 ---
 bg: /Users/xanderdelossantos/dev/letter_generator/joes_graphic.jpg
 ---
+[today]
+
+
 [name]
 [company]
 [street_address]
