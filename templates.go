@@ -14,7 +14,7 @@ type Template struct {
 }
 
 func getTemplate(file_name string) Template {
-	bytes, _ := os.ReadFile(fmt.Sprintf("./templates/%s.md", file_name))
+	bytes, _ := os.ReadFile(fmt.Sprintf("./templates/%s.txt", file_name))
 
 	sections := strings.Split(string(bytes), "---")
 

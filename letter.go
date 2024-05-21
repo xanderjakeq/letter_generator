@@ -142,7 +142,6 @@ func (l *Letter) renderTemplate(t Template, today string) {
 		case false:
 			val = trim_field
 		}
-        fmt.Println(val, field)
 
 		t.Content = strings.ReplaceAll(t.Content, field, val)
 	}
