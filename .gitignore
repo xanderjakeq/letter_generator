@@ -1,4 +1,4 @@
 letter_generator
 output*
-*.txt
+/*.txt
 .DS_Store
