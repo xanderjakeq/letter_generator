@@ -1,5 +1,5 @@
 ---
-bg: /Users/xanderdelossantos/dev/letter_generator/joes_graphic.jpg
+bg: /Users/xanderdelossantos/dev/letter_generator/assets/joes_graphic.jpg
 ---
 [today]
 
@@ -23,7 +23,7 @@ Thank you for supporting this burgeoning and vital Prince George's County develo
  
 Yours truly,
 
-[./signature.png]
+[./assets/signature.png]
 
 Brooke Kidd
 Executive Director
