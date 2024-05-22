@@ -16,7 +16,8 @@ spend less time editing letter templates in ms word.
 ## usage
 
 ### templating
-create `.md` files in the `templates/` folder
+create `.txt` files in the `templates/` folder
+`general_ty.txt` for example
 ```
 ---
 bg: /bg_path/bg.png
@@ -29,6 +30,10 @@ bg: /bg_path/bg.png
 [city_address]
 [donation_amount]
 [donation_date]
+[year]
+[donation_total]
+[donation-1] //used when there are more than 1 donation in the input block and will result to "$[donation_amount] on [donation_date]"
+[donation-2] //refers to the second donation and so on
 
 [./image_path.jpg|10]
 [/another_image_path.jpg|30]
@@ -50,6 +55,15 @@ write the input file and save it as `whatever.txt`
 
 format:
 ```
+template_file_name
+name
+company_name (`-` if none)
+street_address
+city_address
+donation_amount donation_date
+donation_amount donation_date //there can be more than 1 donation
+
+
 template_file_name
 name
 company_name (`-` if none)

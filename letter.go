@@ -25,6 +25,11 @@ import (
 	mtext "github.com/johnfercher/maroto/v2/pkg/components/text"
 )
 
+type Donation struct {
+	amount float32
+	date   string
+}
+
 type Letter struct {
 	maroto   core.Maroto
 	document core.Document
@@ -33,8 +38,7 @@ type Letter struct {
 	Company            string
 	Street_address     string
 	City_address       string
-	Donation_amount    float32
-	Donation_date      string
+	Donations          []Donation
 	Template_file_name string
 }
 
@@ -106,6 +110,9 @@ var valid_fields = []string{
 	"donation_amount",
 	"donation_date",
 	"today",
+	"year",
+	"donation_total",
+	"donation",
 }
 
 func (l *Letter) renderTemplate(t Template, today string) {
@@ -115,12 +122,14 @@ func (l *Letter) renderTemplate(t Template, today string) {
 
 	for _, field := range t.Fields {
 		trim_field := strings.Trim(field, "[]")
+		field_split := strings.Split(trim_field, "-")
+		field_pre := field_split[0]
 
 		var val string
 
-		switch slices.Contains(valid_fields, trim_field) {
+		switch slices.Contains(valid_fields, field_pre) {
 		case true:
-			switch trim_field {
+			switch field_pre {
 			case valid_fields[0]:
 				val = l.Name[0]
 			case valid_fields[1]:
@@ -132,11 +141,29 @@ func (l *Letter) renderTemplate(t Template, today string) {
 			case valid_fields[4]:
 				val = l.City_address
 			case valid_fields[5]:
-				val = fmt.Sprintf("%.2f", l.Donation_amount)
+				val = fmt.Sprintf("%.2f", l.Donations[0].amount)
 			case valid_fields[6]:
-				val = l.Donation_date
+				val = l.Donations[0].date
 			case valid_fields[7]:
 				val = today
+			case valid_fields[8]:
+				val = today[len(today)-4:]
+			case valid_fields[9]:
+				total := 0.0
+				for _, donation := range l.Donations {
+					total += float64(donation.amount)
+				}
+
+				val = fmt.Sprintf("%.2f", total)
+			case valid_fields[10]:
+				idx, _ := strconv.ParseInt(field_split[1], 10, 32)
+
+				if int(idx) <= len(l.Donations) {
+					donation := l.Donations[idx-1]
+					val = fmt.Sprintf("%.2f on %s", donation.amount, donation.date)
+				} else {
+					val = "missing"
+				}
 			}
 
 		case false:
@@ -162,7 +189,7 @@ func (l *Letter) renderTemplate(t Template, today string) {
 	text_prop_small := text_prop
 	text_prop_small.Size = 9
 
-    //todo: should i keep this or leave this spacing to the template
+	//todo: should i keep this or leave this spacing to the template
 	l.maroto.AddRow(40)
 
 	for _, block := range strings.Split(t.Content, "\n\n") {
@@ -183,8 +210,8 @@ func (l *Letter) renderTemplate(t Template, today string) {
 						continue
 					}
 				case '.', '/':
-                    height_split := strings.Split(line, "|")
-                    path := height_split[0]
+					height_split := strings.Split(line, "|")
+					path := height_split[0]
 					_, err := os.Stat(path)
 
 					if err == nil {
