@@ -11,7 +11,7 @@ bg: /Users/xanderdelossantos/dev/letter_generator/assets/joes_graphic.jpg
 
 Dear [first_names],
 
-On behalf of everyone at Joe’s Movement Emporium, I want to thank you for your generous donations received in [donation_date] to support our approved Community Investment Tax Credit project: Keep Creative Suitland Going Strong. Your donation amount is $[donation_amount].
+On behalf of everyone at Joe’s Movement Emporium, I want to thank you for your generous donations received in [donation_date] to support our approved Community Investment Tax Credit project: Keep Creative Suitland Going Strong. Your donation amount is [donation_amount].
  
 
 

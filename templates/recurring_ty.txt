@@ -14,7 +14,7 @@ Dear [first_names],
 On behalf of everyone at Joe’s Movement Emporium, I want to thank you for your
 generous recurring donations received in [year] to support our approved
 Community Investment Tax Credit project: Keep Creative Suitland Going Strong.
-Your total amount donated in [year] is $[donation_total]. Your contributions have been as follows:
+Your total amount donated in [year] is [donation_total]. Your contributions have been as follows:
 
 [donation-1]               [donation-7]
 [donation-2]               [donation-8]

@@ -23,6 +23,8 @@ import (
 
 	"github.com/johnfercher/maroto/v2/pkg/components/image"
 	mtext "github.com/johnfercher/maroto/v2/pkg/components/text"
+
+    "github.com/leekchan/accounting"
 )
 
 type Donation struct {
@@ -120,6 +122,8 @@ func (l *Letter) renderTemplate(t Template, today string) {
 		log.Fatal("letter maroto is nil")
 	}
 
+    ac := accounting.Accounting{Symbol: "$", Precision: 2}
+
 	for _, field := range t.Fields {
 		trim_field := strings.Trim(field, "[]")
 		field_split := strings.Split(trim_field, "-")
@@ -141,7 +145,7 @@ func (l *Letter) renderTemplate(t Template, today string) {
 			case valid_fields[4]:
 				val = l.City_address
 			case valid_fields[5]:
-				val = fmt.Sprintf("%.2f", l.Donations[0].amount)
+				val = fmt.Sprintf(ac.FormatMoney(l.Donations[0].amount))
 			case valid_fields[6]:
 				val = l.Donations[0].date
 			case valid_fields[7]:
@@ -154,13 +158,13 @@ func (l *Letter) renderTemplate(t Template, today string) {
 					total += float64(donation.amount)
 				}
 
-				val = fmt.Sprintf("%.2f", total)
+				val = fmt.Sprintf(ac.FormatMoney(total))
 			case valid_fields[10]:
 				idx, _ := strconv.ParseInt(field_split[1], 10, 32)
 
 				if int(idx) <= len(l.Donations) {
 					donation := l.Donations[idx-1]
-					val = fmt.Sprintf("%.2f on %s", donation.amount, donation.date)
+					val = fmt.Sprintf("%s on %s", ac.FormatMoney(donation.amount), donation.date)
 				} else {
 					val = "missing"
 				}

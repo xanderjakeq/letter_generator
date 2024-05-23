@@ -11,7 +11,7 @@ bg: /Users/xanderdelossantos/dev/letter_generator/assets/joes_graphic.jpg
 
 Dear [first_names],
 
-On behalf of everyone at Joe’s Movement Emporium, I want to thank you for your generous $[donation_amount] donation received on [donation_date]. Your gift ensures top-quality arts education opportunities and experiences continue to thrive here at Joe’s, including first-ever Cultural Arts Festival on April 27, 2024!
+On behalf of everyone at Joe’s Movement Emporium, I want to thank you for your generous [donation_amount] donation received on [donation_date]. Your gift ensures top-quality arts education opportunities and experiences continue to thrive here at Joe’s, including first-ever Cultural Arts Festival on April 27, 2024!
 
 
 
