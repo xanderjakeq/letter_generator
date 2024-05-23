@@ -23,7 +23,7 @@ create `.txt` files in the `templates/` folder
 bg: /bg_path/bg.png
 ---
 
-[name]
+[name] // can have multiple names separated by `&` like `first last & first last & first last`
 [first_names]
 [company]
 [street_address]
@@ -65,7 +65,7 @@ donation_amount donation_date //there can be more than 1 donation
 
 
 template_file_name
-name
+firstname|nickname lastname & firstname|nickname lastname
 company_name (`-` if none)
 street_address
 city_address
