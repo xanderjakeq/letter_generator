@@ -6,6 +6,7 @@ require (
 	github.com/boombuler/barcode v1.0.1 // indirect
 	github.com/cockroachdb/apd v1.1.0 // indirect
 	github.com/f-amaral/go-async v0.3.0 // indirect
+	github.com/go-chi/chi/v5 v5.0.12 // indirect
 	github.com/google/uuid v1.5.0 // indirect
 	github.com/hhrutter/lzw v1.0.0 // indirect
 	github.com/hhrutter/tiff v1.0.1 // indirect
