@@ -2,3 +2,4 @@ letter_generator
 output*
 /*.txt
 .DS_Store
+bin/*

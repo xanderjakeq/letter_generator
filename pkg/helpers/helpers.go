@@ -1,13 +1,14 @@
-package main
+package helpers
 
 import (
 	"log"
 	"os"
 	"strconv"
 	"strings"
+    "letter_generator/pkg/letter"
 )
 
-func readFileInput(l *[]Letter) {
+func ReadFileInput(l *[]letter.Letter) {
 	input_path := os.Args[1]
 
 	byte, err := os.ReadFile(input_path)
@@ -26,16 +27,16 @@ func readFileInput(l *[]Letter) {
 		}
 
 		donation_strings := letter_data[5:]
-		donations := make([]Donation, 0)
+		donations := make([]letter.Donation, 0)
 
 		for _, donation_string := range donation_strings {
 			donation := strings.Split(donation_string, " ")
 			donation_amount, _ := strconv.ParseFloat(donation[0], 32)
 
-			donations = append(donations, Donation{amount: float32(donation_amount), date: donation[1]})
+			donations = append(donations, letter.Donation{Amount: float32(donation_amount), Date: donation[1]})
 		}
 
-		*l = append(*l, Letter{
+		*l = append(*l, letter.Letter{
 			Template_file_name: letter_data[0],
 			Name:               processNames(letter_data[1]),
 			Company:            letter_data[2],

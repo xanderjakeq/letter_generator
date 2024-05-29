@@ -1,4 +1,4 @@
-package main
+package letter
 
 import (
 	"fmt"
@@ -28,8 +28,8 @@ import (
 )
 
 type Donation struct {
-	amount float32
-	date   string
+	Amount float32
+	Date   string
 }
 
 type Letter struct {
@@ -145,9 +145,9 @@ func (l *Letter) renderTemplate(t Template, today string) {
 			case valid_fields[4]:
 				val = l.City_address
 			case valid_fields[5]:
-				val = fmt.Sprintf(ac.FormatMoney(l.Donations[0].amount))
+				val = fmt.Sprintf(ac.FormatMoney(l.Donations[0].Amount))
 			case valid_fields[6]:
-				val = l.Donations[0].date
+				val = l.Donations[0].Date
 			case valid_fields[7]:
 				val = today
 			case valid_fields[8]:
@@ -155,7 +155,7 @@ func (l *Letter) renderTemplate(t Template, today string) {
 			case valid_fields[9]:
 				total := 0.0
 				for _, donation := range l.Donations {
-					total += float64(donation.amount)
+					total += float64(donation.Amount)
 				}
 
 				val = fmt.Sprintf(ac.FormatMoney(total))
@@ -164,7 +164,7 @@ func (l *Letter) renderTemplate(t Template, today string) {
 
 				if int(idx) <= len(l.Donations) {
 					donation := l.Donations[idx-1]
-					val = fmt.Sprintf("%s on %s", ac.FormatMoney(donation.amount), donation.date)
+					val = fmt.Sprintf("%s on %s", ac.FormatMoney(donation.Amount), donation.Date)
 				} else {
 					val = "missing"
 				}
