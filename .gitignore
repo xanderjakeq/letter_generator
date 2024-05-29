@@ -3,3 +3,5 @@ output*
 /*.txt
 .DS_Store
 bin/*
+cmd/server/tmp
+*_templ.go
