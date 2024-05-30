@@ -3,6 +3,7 @@ module letter_generator
 go 1.22.2
 
 require (
+	github.com/a-h/templ v0.2.707 // indirect
 	github.com/boombuler/barcode v1.0.1 // indirect
 	github.com/cockroachdb/apd v1.1.0 // indirect
 	github.com/f-amaral/go-async v0.3.0 // indirect
