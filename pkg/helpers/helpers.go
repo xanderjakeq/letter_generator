@@ -1,26 +1,27 @@
 package helpers
 
 import (
+	"fmt"
+	"letter_generator/pkg/letter"
 	"log"
-	"os"
 	"strconv"
 	"strings"
-    "letter_generator/pkg/letter"
 )
 
-func ReadFileInput(l *[]letter.Letter) {
-	input_path := os.Args[1]
-
-	byte, err := os.ReadFile(input_path)
-
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	file_strings := strings.Split(strings.Trim(string(byte), "\n"), "\n\n")
+func ReadInput(l *[]letter.Letter, input []byte) {
+	file_strings := strings.Split(strings.Trim(string(input), "\n"), "\n\n")
 
 	for _, data := range file_strings {
 		letter_data := strings.Split(data, "\n")
+
+		for i, l_data := range letter_data {
+			letter_data[i] = strings.Trim(l_data, "\n\r")
+
+			fmt.Println(letter_data[i])
+			fmt.Printf("%#v\n", letter_data[i])
+			fmt.Println(len(letter_data[i]))
+			fmt.Println("data string ^")
+		}
 
 		if len(letter_data) < 6 {
 			log.Fatal("incomplete input")

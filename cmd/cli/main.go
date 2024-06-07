@@ -14,9 +14,17 @@ func main() {
 
 	if len(os.Args) > 1 {
 		if os.Args[1] == "serve" {
-            log.Print("running server on")
+			log.Print("running server on")
 		} else {
-			helpers.ReadFileInput(&letters)
+			input_path := os.Args[1]
+
+			byte, err := os.ReadFile(input_path)
+
+			if err != nil {
+				log.Fatal(err)
+			}
+
+			helpers.ReadInput(&letters, byte)
 		}
 	} else {
 		log.Fatal("input file path required. example: './input.txt'")
