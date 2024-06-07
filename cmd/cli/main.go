@@ -4,8 +4,10 @@ import l "letter_generator/pkg/letter"
 import "letter_generator/pkg/helpers"
 
 import (
+	"fmt"
 	"log"
 	"os"
+	"os/exec"
 	"sync"
 )
 
@@ -30,15 +32,23 @@ func main() {
 		log.Fatal("input file path required. example: './input.txt'")
 	}
 
+	var output_path string
 	var wg sync.WaitGroup
 
 	for _, letter := range letters {
 		wg.Add(1)
 		go func(l *l.Letter) {
 			defer wg.Done()
-			l.Generate()
+			output_path = l.Generate()
 		}(&letter)
 	}
 
 	wg.Wait()
+
+	cmd := exec.Command("open", fmt.Sprintf("%s", output_path))
+	err := cmd.Run()
+
+	if err != nil {
+		log.Fatal(err)
+	}
 }

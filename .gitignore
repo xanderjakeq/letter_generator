@@ -5,3 +5,4 @@ output*
 bin/*
 cmd/server/tmp
 *_templ.go
+tmp

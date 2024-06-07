@@ -1,14 +1,13 @@
 package helpers
 
 import (
-	"fmt"
+	"errors"
 	"letter_generator/pkg/letter"
-	"log"
 	"strconv"
 	"strings"
 )
 
-func ReadInput(l *[]letter.Letter, input []byte) {
+func ReadInput(l *[]letter.Letter, input []byte) error {
 	file_strings := strings.Split(strings.Trim(string(input), "\n"), "\n\n")
 
 	for _, data := range file_strings {
@@ -16,15 +15,10 @@ func ReadInput(l *[]letter.Letter, input []byte) {
 
 		for i, l_data := range letter_data {
 			letter_data[i] = strings.Trim(l_data, "\n\r")
-
-			fmt.Println(letter_data[i])
-			fmt.Printf("%#v\n", letter_data[i])
-			fmt.Println(len(letter_data[i]))
-			fmt.Println("data string ^")
 		}
 
 		if len(letter_data) < 6 {
-			log.Fatal("incomplete input")
+            return errors.New("incomplete input")
 		}
 
 		donation_strings := letter_data[5:]
@@ -46,6 +40,8 @@ func ReadInput(l *[]letter.Letter, input []byte) {
 			Donations:          donations,
 		})
 	}
+
+    return nil
 }
 
 func processNames(name_string string) [2]string {

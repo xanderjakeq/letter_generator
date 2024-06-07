@@ -24,7 +24,7 @@ import (
 	"github.com/johnfercher/maroto/v2/pkg/components/image"
 	mtext "github.com/johnfercher/maroto/v2/pkg/components/text"
 
-    "github.com/leekchan/accounting"
+	"github.com/leekchan/accounting"
 )
 
 type Donation struct {
@@ -44,7 +44,7 @@ type Letter struct {
 	Template_file_name string
 }
 
-func (l *Letter) Generate() {
+func (l *Letter) Generate() string {
 	today := time.Now().Local().Format("January 02, 2006")
 	template := getTemplate(l.Template_file_name)
 
@@ -52,8 +52,18 @@ func (l *Letter) Generate() {
 
 	l.renderTemplate(template, today)
 
+	cwd, err := os.Executable()
+
+	if err != nil {
+		log.Fatal(err)
+	}
+
+    cwd_arr := strings.Split(cwd, "/")
+    cwd = strings.Join(cwd_arr[:len(cwd_arr) - 1], "/")
+
 	dir_name := fmt.Sprintf("output_%s", strings.ReplaceAll(today, " ", "_"))
-	err := os.MkdirAll(fmt.Sprintf("./%s", dir_name), os.ModePerm)
+	path := fmt.Sprintf("%s/%s", cwd, dir_name)
+	err = os.MkdirAll(path, os.ModePerm)
 
 	if err != nil {
 		log.Fatal(err)
@@ -64,8 +74,8 @@ func (l *Letter) Generate() {
 	}
 
 	err = l.document.Save(
-		fmt.Sprintf("./%s/ty_%s_%s_%d.pdf",
-			dir_name,
+		fmt.Sprintf("%s/ty_%s_%s_%d.pdf",
+			path,
 			l.Name[1],
 			today,
 			rand.IntN(10000)))
@@ -73,9 +83,11 @@ func (l *Letter) Generate() {
 	if err != nil {
 		log.Fatal(err)
 	}
+
+	return path
 }
 
-func (l *Letter) GetMaroto(t Template) {
+func (l *Letter) GetMaroto(t template) {
 	//todo: move setup processing to template struct
 	bg_path := strings.Trim(strings.Split(t.Setup, ":")[1], " \n")
 	bytes, err := os.ReadFile(bg_path)
@@ -117,12 +129,12 @@ var valid_fields = []string{
 	"donation",
 }
 
-func (l *Letter) renderTemplate(t Template, today string) {
+func (l *Letter) renderTemplate(t template, today string) {
 	if l.maroto == nil {
 		log.Fatal("letter maroto is nil")
 	}
 
-    ac := accounting.Accounting{Symbol: "$", Precision: 2}
+	ac := accounting.Accounting{Symbol: "$", Precision: 2}
 
 	for _, field := range t.Fields {
 		trim_field := strings.Trim(field, "[]")

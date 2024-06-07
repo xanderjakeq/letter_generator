@@ -1,43 +1,58 @@
 package views
 
 templ layout() {
-	<!DOCTYPE html>
-	<html lang="en">
-		<head>
-			<meta charset="utf-8"/>
-			<meta name="viewport" content="width=device-width, initial-scale=1"/>
-			<title>Letter Generator</title>
-			<link rel="stylesheet" href="/s/styles.css"/>
-			<script src="/s/htmx.js"></script>
-		</head>
-		<body hx-boost="true">
-			{ children... }
-		</body>
-	</html>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Letter Generator</title>
+    <link rel="stylesheet" href="/s/styles.css" />
+    <script src="/s/htmx.js"></script>
+</head>
+
+<body hx-boost="true">
+    { children... }
+</body>
+
+</html>
 }
 
 templ Index() {
-	@layout() {
-		<nav>
-			<button hx-get="/input" hx-push-url="true" hx-target="#main" hx-swap="innerHTML">input</button>
-			<button hx-get="/template" hx-push-url="true" hx-target="#main" hx-swap="innerHTML">templates</button>
-            <main id="main" hx-get="/input" hx-trigger="load" hx-target="#main" hx-swap="innerHTML"/>
-		</nav>
-	}
+@layout() {
+<nav>
+    <a href="#" hx-get="/input" hx-target="#main" hx-swap="innerHTML">input</a>
+    <a href="#" hx-get="/template" hx-target="#main" hx-swap="innerHTML">templates</a>
+    <main id="main" hx-get="/input" hx-trigger="load" hx-target="#main" hx-swap="innerHTML" />
+</nav>
+}
 }
 
 templ Input() {
-	<h3>Input</h3>
-    <form action="/generate" method="post">
-        <textarea name="input" type="text" rows="50" cols="50"/>
-        <button>generate</button>
-    </form>
+@layout() {
+<h3>Input</h3>
+<span id="success">waiting</span>
+<form action="/generate" hx-push-url="false" method="post" hx-target="#success" hx-swap="innerHTML">
+    <textarea name="input" type="text" rows="50" cols="50" />
+    <input type="submit" value="generate" />
+</form>
+}
 }
 
-templ Template() {
-	<h3>Template</h3>
+templ Template(templates *[]string) {
+<h3>Templates</h3>
+<ul>
+    for _, template := range *templates {
+    <li id="{template}">{ template }</li>
+    }
+</ul>
 }
 
 templ Generate() {
-	<h3>success</h3>
+<h3>success</h3>
+}
+
+templ Error(err string) {
+<span>{err}</span>
 }

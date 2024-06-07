@@ -1,6 +1,10 @@
 package main
 
 import (
+    "os"
+    "log"
+    "strings"
+    "fmt"
 	"net/http"
 
 	"github.com/a-h/templ"
@@ -20,5 +24,27 @@ func (rt templateRouter) Routes() chi.Router {
 }
 
 func (rt templateRouter) Landing(w http.ResponseWriter, r *http.Request) {
-	templ.Handler(views.Template()).ServeHTTP(w, r)
+	cwd, err := os.Executable()
+
+	if err != nil {
+		log.Fatal(err)
+	}
+
+    cwd_arr := strings.Split(cwd, "/")
+    cwd = strings.Join(cwd_arr[:len(cwd_arr) - 2], "/")
+
+	dir_name := fmt.Sprintf("%s/templates", cwd)
+    files, err := os.ReadDir(dir_name)
+
+	if err != nil {
+		log.Fatal(err)
+	}
+
+    var templates []string
+
+    for _, file := range files {
+        templates = append(templates, file.Name())
+    }
+
+	templ.Handler(views.Template(&templates)).ServeHTTP(w, r)
 }

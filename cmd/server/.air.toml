@@ -4,8 +4,8 @@ tmp_dir = "tmp"
 
 [build]
   args_bin = ["dev", "3000"]
-  bin = "./tmp/main"
-  cmd = "templ generate && go build -o ./tmp/main ."
+  bin = "../../bin/server"
+  cmd = "templ generate && make -C ../../ build_server"
   delay = 1000
   exclude_dir = ["assets", "tmp", "vendor", "testdata"]
   exclude_file = []

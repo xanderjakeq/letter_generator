@@ -7,14 +7,19 @@ import (
 	"strings"
 )
 
-type Template struct {
+type template struct {
 	Setup   string
 	Content string
 	Fields  []string
 }
 
-func getTemplate(file_name string) Template {
-	bytes, _ := os.ReadFile(fmt.Sprintf("./templates/%s.txt", file_name))
+func getTemplate(file_name string) template {
+	cwd, _ := os.Executable()
+
+	cwd_arr := strings.Split(cwd, "/")
+	cwd = strings.Join(cwd_arr[:len(cwd_arr)-2], "/")
+
+	bytes, _ := os.ReadFile(fmt.Sprintf("%s/templates/%s.txt", cwd, file_name))
 
 	sections := strings.Split(string(bytes), "---")
 
@@ -26,7 +31,7 @@ func getTemplate(file_name string) Template {
 
 	fields := r.FindAllString(main_content, -1)
 
-	return Template{
+	return template{
 		Setup:   setup,
 		Content: main_content,
 		Fields:  fields,

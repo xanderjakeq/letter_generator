@@ -2,7 +2,9 @@ package main
 
 import (
 	"fmt"
+	"log"
 	"net/http"
+	"os/exec"
 	"sync"
 
 	"github.com/a-h/templ"
@@ -28,21 +30,32 @@ func (rt generateRouter) Generate(w http.ResponseWriter, r *http.Request) {
 	input := []byte(r.Form.Get("input"))
 
 	letters := make([]l.Letter, 0)
-	helpers.ReadInput(&letters, input)
+	err := helpers.ReadInput(&letters, input)
 
-	fmt.Println(len(letters))
-	fmt.Println(len(letters[0].Template_file_name))
+	if err != nil {
+		templ.Handler(views.Error("incomplete input")).ServeHTTP(w, r)
+	} else {
 
-	var wg sync.WaitGroup
-	for _, letter := range letters {
-		wg.Add(1)
-		go func(l *l.Letter) {
-			defer wg.Done()
-			l.Generate()
-		}(&letter)
+		var output_path string
+
+		var wg sync.WaitGroup
+		for _, letter := range letters {
+			wg.Add(1)
+			go func(l *l.Letter) {
+				defer wg.Done()
+				output_path = l.Generate()
+			}(&letter)
+		}
+
+		wg.Wait()
+
+		cmd := exec.Command("open", fmt.Sprintf("%s", output_path))
+		err = cmd.Run()
+
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		templ.Handler(views.Generate()).ServeHTTP(w, r)
 	}
-
-	wg.Wait()
-
-	templ.Handler(views.Generate()).ServeHTTP(w, r)
 }

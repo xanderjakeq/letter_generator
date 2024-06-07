@@ -4,6 +4,6 @@ server: build_server
 build: build_server build_cli
 
 build_server:
-	go build -o ./bin/server ./cmd/server/main.go
+	go build -o ./bin/server ./cmd/server/
 build_cli:
-	go build -o ./bin/letter_generator ./cmd/cli/main.go
+	go build -o ./bin/letter_generator ./cmd/cli/
