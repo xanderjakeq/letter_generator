@@ -1,3 +1,6 @@
+tailwind:
+	npx tailwindcss -i ./cmd/server/static/input.css -o ./cmd/server/static/styles.css -c ./cmd/server/tailwind.config.js -m --watch
+
 server: build_server
 	./bin/server
 
