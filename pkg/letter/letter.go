@@ -44,9 +44,13 @@ type Letter struct {
 	Template_file_name string
 }
 
-func (l *Letter) Generate() string {
+func (l *Letter) Generate() (string, error) {
 	today := time.Now().Local().Format("January 02, 2006")
-	template := getTemplate(l.Template_file_name)
+	template, err := getTemplate(l.Template_file_name)
+
+    if err != nil {
+        return "", err
+    }
 
 	l.GetMaroto(template)
 
@@ -55,7 +59,7 @@ func (l *Letter) Generate() string {
 	cwd, err := os.Executable()
 
 	if err != nil {
-		log.Fatal(err)
+        return "", err
 	}
 
     cwd_arr := strings.Split(cwd, "/")
@@ -66,7 +70,7 @@ func (l *Letter) Generate() string {
 	err = os.MkdirAll(path, os.ModePerm)
 
 	if err != nil {
-		log.Fatal(err)
+        return "", err
 	}
 
 	if l.document == nil {
@@ -81,10 +85,10 @@ func (l *Letter) Generate() string {
 			rand.IntN(10000)))
 
 	if err != nil {
-		log.Fatal(err)
+        return "", err
 	}
 
-	return path
+	return path, nil
 }
 
 func (l *Letter) GetMaroto(t template) {

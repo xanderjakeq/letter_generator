@@ -2,7 +2,9 @@ package helpers
 
 import (
 	"errors"
+	"fmt"
 	"letter_generator/pkg/letter"
+	"os"
 	"strconv"
 	"strings"
 )
@@ -18,7 +20,7 @@ func ReadInput(l *[]letter.Letter, input []byte) error {
 		}
 
 		if len(letter_data) < 6 {
-            return errors.New("incomplete input")
+			return errors.New("incomplete input")
 		}
 
 		donation_strings := letter_data[5:]
@@ -26,7 +28,18 @@ func ReadInput(l *[]letter.Letter, input []byte) error {
 
 		for _, donation_string := range donation_strings {
 			donation := strings.Split(donation_string, " ")
-			donation_amount, _ := strconv.ParseFloat(donation[0], 32)
+			donation_amount, err := strconv.ParseFloat(donation[0], 32)
+
+			if err != nil {
+				return errors.New(fmt.Sprintf("invalid donation amount: %s", donation[0]))
+			}
+
+			if len(donation) < 2 {
+				return errors.New("can't render date, separate donation amount and date like '100 2/5/2024'")
+			}
+			if len(donation[1]) == 0 {
+				return errors.New("empty date")
+			}
 
 			donations = append(donations, letter.Donation{Amount: float32(donation_amount), Date: donation[1]})
 		}
@@ -41,7 +54,7 @@ func ReadInput(l *[]letter.Letter, input []byte) error {
 		})
 	}
 
-    return nil
+	return nil
 }
 
 func processNames(name_string string) [2]string {
@@ -64,4 +77,24 @@ func processNames(name_string string) [2]string {
 	}
 
 	return [2]string{strings.Join(firstnames, " & "), strings.Join(fullnames, " & ")}
+}
+
+var cwd_g string
+
+func GetRootDir() (string, error) {
+	if cwd_g != "" {
+		return cwd_g, nil
+	}
+
+	cwd, err := os.Executable()
+	if err != nil {
+		return "", err
+	}
+
+	cwd_arr := strings.Split(cwd, "/")
+	cwd = strings.Join(cwd_arr[:len(cwd_arr)-2], "/")
+
+	cwd_g = cwd
+
+	return cwd, nil
 }

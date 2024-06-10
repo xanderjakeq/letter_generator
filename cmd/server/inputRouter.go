@@ -20,5 +20,10 @@ func (rt inputRouter) Routes() chi.Router {
 }
 
 func (rt inputRouter) Landing(w http.ResponseWriter, r *http.Request) {
-	templ.Handler(views.Input()).ServeHTTP(w, r)
+	hx_request := r.Header.Get("HX-Request")
+	if len(hx_request) > 0 {
+		templ.Handler(views.Input()).ServeHTTP(w, r)
+		return
+	}
+    templ.Handler(views.Index("/input")).ServeHTTP(w, r)
 }

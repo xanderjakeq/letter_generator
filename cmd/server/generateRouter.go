@@ -1,8 +1,6 @@
 package main
 
 import (
-	"fmt"
-	"log"
 	"net/http"
 	"os/exec"
 	"sync"
@@ -33,28 +31,34 @@ func (rt generateRouter) Generate(w http.ResponseWriter, r *http.Request) {
 	err := helpers.ReadInput(&letters, input)
 
 	if err != nil {
-		templ.Handler(views.Error("incomplete input")).ServeHTTP(w, r)
+		templ.Handler(views.Error(err.Error())).ServeHTTP(w, r)
 	} else {
-
 		var output_path string
+        var err error
 
 		var wg sync.WaitGroup
 		for _, letter := range letters {
 			wg.Add(1)
 			go func(l *l.Letter) {
 				defer wg.Done()
-				output_path = l.Generate()
+				output_path, err = l.Generate()
 			}(&letter)
 		}
 
 		wg.Wait()
 
-		cmd := exec.Command("open", fmt.Sprintf("%s", output_path))
+        if err != nil {
+            templ.Handler(views.Error(err.Error())).ServeHTTP(w, r)
+            return
+        }
+
+		cmd := exec.Command("open", output_path)
 		err = cmd.Run()
 
-		if err != nil {
-			log.Fatal(err)
-		}
+        if err != nil {
+            templ.Handler(views.Error(err.Error())).ServeHTTP(w, r)
+            return
+        }
 
 		templ.Handler(views.Generate()).ServeHTTP(w, r)
 	}

@@ -1,61 +1,70 @@
 package views
 
 templ layout() {
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Letter Generator</title>
-    <link rel="stylesheet" href="/s/styles.css" />
-    <script src="/s/htmx.js"></script>
-</head>
-
-<body hx-boost="true" class="bg-neutral-900 text-amber-50">
-    { children... }
-</body>
-
-</html>
+	<!DOCTYPE html>
+	<html lang="en">
+		<head>
+			<meta charset="utf-8"/>
+			<meta name="viewport" content="width=device-width, initial-scale=1"/>
+			<title>Letter Generator</title>
+			<link rel="stylesheet" href="/s/styles.css"/>
+			<script src="/s/htmx.js"></script>
+		</head>
+		<body hx-boost="true" class="bg-neutral-900 text-amber-50">
+			<div class="w-3/4 flex flex-col justify-start m-auto">
+				{ children... }
+			</div>
+		</body>
+	</html>
 }
 
-templ Index() {
-@layout() {
-<div class="w-3/4 flex flex-col justify-start px-20 m-auto">
-    <nav class="w-full flex gap-5">
-        <a href="#" hx-get="/input" hx-target="#main" hx-swap="innerHTML">input</a>
-        <a href="#" hx-get="/template" hx-target="#main" hx-swap="innerHTML">templates</a>
-    </nav>
-    <main id="main" hx-get="/input" hx-trigger="load" hx-target="#main" hx-swap="innerHTML" />
-</div>
-}
+templ Index(path string) {
+	@layout() {
+		<nav class="w-full flex gap-5 my-5">
+			<a href="/input" hx-target="#main" hx-swap="innerHTML">input</a>
+			<a href="/template" hx-target="#main" hx-swap="innerHTML">templates</a>
+		</nav>
+		<main id="main" hx-get={ path } hx-trigger="load" hx-target="#main" hx-swap="innerHTML"></main>
+	}
 }
 
 templ Input() {
-@layout() {
-<h3>Input</h3>
-<span id="success">waiting</span>
-<form action="/generate" hx-push-url="false" method="post" hx-target="#success" hx-swap="innerHTML">
-    <textarea required name="input" type="text" rows="50" cols="50" class="w-full
-    text-neutral-900 p-5" />
-    <input type="submit" value="generate" />
-</form>
-}
+	<h3 class="text-xl my-5">Input</h3>
+	<span id="success">waiting</span>
+	<form action="/generate" hx-push-url="false" method="post" hx-target="#success" hx-swap="innerHTML">
+		<textarea
+			required
+			name="input"
+			type="text"
+			class="w-full h-96 rounded text-neutral-900 p-3"
+		></textarea>
+		<input
+			type="submit"
+			value="generate"
+			class="cursor-pointer rounded-md bg-indigo-500 active:bg-indigo-700 px-2"
+		/>
+	</form>
 }
 
-templ Template(templates *[]string) {
-<h3>Templates</h3>
-<ul>
-    for _, template := range *templates {
-    <li id="{template}">{ template }</li>
-    }
-</ul>
+templ Template(dir *string, templates *[]string) {
+	<h3 class="text-xl my-5">Templates</h3>
+	<a
+		href="/template/opendir"
+		hx-push-url="false"
+		class="!text-indigo-400
+    break-words hover:!text-indigo-500 break-words"
+	>at { *dir }</a>
+	<ul>
+		for _, template := range *templates {
+			<li id="{template}">{ template }</li>
+		}
+	</ul>
 }
 
 templ Generate() {
-<h3>success</h3>
+	<h3>success</h3>
 }
 
 templ Error(err string) {
-<span class="text-red-600">{err}</span>
+	<span class="text-red-600">{ err }</span>
 }

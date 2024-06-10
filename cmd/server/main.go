@@ -46,7 +46,7 @@ func main() {
     FileServer(r, "/s", filesDir)
 
 	r.Get("/", func(w http.ResponseWriter, r *http.Request) {
-        templ.Handler(views.Index()).ServeHTTP(w, r)
+        templ.Handler(views.Index("/input")).ServeHTTP(w, r)
 	})
 
     r.Mount("/input", inputRouter{}.Routes())

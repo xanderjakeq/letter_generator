@@ -13,13 +13,16 @@ type template struct {
 	Fields  []string
 }
 
-func getTemplate(file_name string) template {
+func getTemplate(file_name string) (template, error) {
 	cwd, _ := os.Executable()
 
 	cwd_arr := strings.Split(cwd, "/")
 	cwd = strings.Join(cwd_arr[:len(cwd_arr)-2], "/")
 
-	bytes, _ := os.ReadFile(fmt.Sprintf("%s/templates/%s.txt", cwd, file_name))
+	bytes, err := os.ReadFile(fmt.Sprintf("%s/templates/%s.txt", cwd, file_name))
+	if err != nil {
+		return template{}, err
+	}
 
 	sections := strings.Split(string(bytes), "---")
 
@@ -35,5 +38,5 @@ func getTemplate(file_name string) template {
 		Setup:   setup,
 		Content: main_content,
 		Fields:  fields,
-	}
+	}, nil
 }
