@@ -23,7 +23,7 @@ Thank you for supporting this burgeoning and vital Prince George's County develo
  
 Yours truly,
 
-[./assets/signature.png]
+[/Users/xanderdelossantos/dev/letter_generator/assets/signature.png]
 
 Brooke Kidd
 Executive Director

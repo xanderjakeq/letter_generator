@@ -22,7 +22,7 @@ Your sponsorship sustains our program impact and helps us reach a greater audien
 I hope you enjoyed the Cultural Arts Festival!
 Yours truly,
 
-[./assets/signature.png]
+[/Users/xanderdelossantos/dev/letter_generator/assets/signature.png|10]
 
 Brooke Kidd
 Executive Director
@@ -32,4 +32,4 @@ Executive Director
 
 
 
-[./assets/letter_graphic.png|30]
+[/Users/xanderdelossantos/dev/letter_generator/assets/letter_graphic.png|30]

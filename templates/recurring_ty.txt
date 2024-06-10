@@ -31,7 +31,7 @@ Your total amount donated in [year] is [donation_total]. Your contributions have
 
 Yours truly,
 
-[./assets/signature.png|10]
+[/Users/xanderdelossantos/dev/letter_generator/assets/signature.png|10]
 
 Brooke Kidd
 Executive Director

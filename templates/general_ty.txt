@@ -28,7 +28,7 @@ I look forward to seeing you at Joe’s!
 
 Yours truly,
 
-[./assets/signature.png|10]
+[/Users/xanderdelossantos/dev/letter_generator/assets/signature.png|10]
 
 Brooke Kidd
 Executive Director
