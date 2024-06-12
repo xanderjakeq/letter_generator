@@ -62,7 +62,7 @@ func (rt templateRouter) OpenDir(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	cmd := exec.Command("open", fmt.Sprintf("%s/templates",cwd))
+	cmd := exec.Command("open", fmt.Sprintf("%s/templates", cwd))
 	err = cmd.Run()
 
 	if err != nil {
@@ -70,5 +70,5 @@ func (rt templateRouter) OpenDir(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-    http.Redirect(w, r, "/template", http.StatusTemporaryRedirect)
+	http.Redirect(w, r, "/template", http.StatusTemporaryRedirect)
 }
