@@ -2,9 +2,7 @@ package main
 
 import (
 	"fmt"
-	"log"
 	"net/http"
-	"os"
 	"os/exec"
 
 	"github.com/a-h/templ"
@@ -32,24 +30,7 @@ func (rt templateRouter) Landing(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	cwd, err := helpers.GetRootDir()
-
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	dir_name := fmt.Sprintf("%s/templates", cwd)
-	files, err := os.ReadDir(dir_name)
-
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	var templates []string
-
-	for _, file := range files {
-		templates = append(templates, file.Name())
-	}
+	dir_name, templates := helpers.GetTemplateNames()
 
 	templ.Handler(views.Template(&dir_name, &templates)).ServeHTTP(w, r)
 }

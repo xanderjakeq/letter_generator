@@ -1,10 +1,9 @@
 package main
 
-import l "letter_generator/pkg/letter"
-import "letter_generator/pkg/helpers"
-
 import (
 	"fmt"
+	"letter_generator/pkg/helpers"
+	l "letter_generator/pkg/letter"
 	"log"
 	"os"
 	"os/exec"
@@ -35,18 +34,20 @@ func main() {
 	var output_path string
 	var wg sync.WaitGroup
 
+	var err error
+
 	for _, letter := range letters {
 		wg.Add(1)
 		go func(l *l.Letter) {
 			defer wg.Done()
-			output_path, _ = l.Generate()
+			output_path, err = l.Generate()
 		}(&letter)
 	}
 
 	wg.Wait()
 
 	cmd := exec.Command("open", fmt.Sprintf("%s", output_path))
-	err := cmd.Run()
+	err = cmd.Run()
 
 	if err != nil {
 		log.Fatal(err)

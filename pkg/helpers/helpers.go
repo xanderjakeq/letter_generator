@@ -4,19 +4,26 @@ import (
 	"errors"
 	"fmt"
 	"letter_generator/pkg/letter"
+	"log"
 	"os"
+	"slices"
 	"strconv"
 	"strings"
 )
 
 func ReadInput(l *[]letter.Letter, input []byte) error {
 	file_strings := strings.Split(strings.Trim(string(input), "\n"), "\n\n")
+	_, templates := GetTemplateNames()
 
 	for _, data := range file_strings {
 		letter_data := strings.Split(data, "\n")
 
 		for i, l_data := range letter_data {
 			letter_data[i] = strings.Trim(l_data, "\n\r")
+		}
+
+		if !slices.Contains(templates, letter_data[0]) {
+			return errors.New(fmt.Sprintf("can't find template: %s", letter_data[0]))
 		}
 
 		if len(letter_data) < 6 {
@@ -66,6 +73,7 @@ func processNames(name_string string) [2]string {
 		firstname := fullname_split[0]
 		nickname := strings.Split(firstname, "|")
 
+		// TODO: handle multiple word nicknames
 		if len(nickname) == 2 {
 			firstnames = append(firstnames, nickname[1])
 		} else {
@@ -97,4 +105,24 @@ func GetRootDir() (string, error) {
 	cwd_g = cwd
 
 	return cwd, nil
+}
+
+// returns (directory, templates)
+func GetTemplateNames() (string, []string) {
+	cwd, err := GetRootDir()
+
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	dir_name := fmt.Sprintf("%s/templates", cwd)
+	templates, err := os.ReadDir(dir_name)
+
+	template_names := make([]string, 0)
+
+	for _, entry := range templates {
+		template_names = append(template_names, strings.Split(entry.Name(), ".")[0])
+	}
+
+	return dir_name, template_names
 }

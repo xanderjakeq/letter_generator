@@ -28,6 +28,7 @@ func (rt generateRouter) Generate(w http.ResponseWriter, r *http.Request) {
 	input := []byte(r.Form.Get("input"))
 
 	letters := make([]l.Letter, 0)
+
 	err := helpers.ReadInput(&letters, input)
 
 	if err != nil {
