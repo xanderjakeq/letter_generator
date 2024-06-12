@@ -15,6 +15,7 @@ import (
 	"github.com/johnfercher/maroto/v2/pkg/consts/extension"
 	"github.com/johnfercher/maroto/v2/pkg/consts/fontfamily"
 	"github.com/johnfercher/maroto/v2/pkg/consts/fontstyle"
+	"github.com/johnfercher/maroto/v2/pkg/consts/pagesize"
 
 	"github.com/johnfercher/maroto/v2/pkg/core"
 	"github.com/johnfercher/maroto/v2/pkg/props"
@@ -92,7 +93,7 @@ func (l *Letter) Generate() (string, error) {
 }
 
 func (l *Letter) GetMaroto(t template) {
-	//todo: move setup processing to template struct
+	// Todo: move setup processing to template struct
 	bg_path := strings.Trim(strings.Split(t.Setup, ":")[1], " \n")
 	bytes, err := os.ReadFile(bg_path)
 
@@ -111,8 +112,8 @@ func (l *Letter) GetMaroto(t template) {
 	}
 
 	cfg := config.NewBuilder().
-		WithDimensions(216, 279.5).
-		WithMargins(0, 0, 0).
+		WithPageSize(pagesize.Letter).
+		WithMargins(0, 15, 0).
 		WithBackgroundImage(bytes, ext).
 		Build()
 
@@ -209,7 +210,7 @@ func (l *Letter) renderTemplate(t template, today string) {
 	text_prop_small := text_prop
 	text_prop_small.Size = 9
 
-	//todo: should i keep this or leave this spacing to the template
+	// Todo: should i keep this or leave this spacing to the template
 	l.maroto.AddRow(40)
 
 	for _, block := range strings.Split(t.Content, "\n\n") {

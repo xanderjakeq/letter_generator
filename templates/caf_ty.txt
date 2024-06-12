@@ -3,7 +3,6 @@ bg: /Users/xanderdelossantos/dev/letter_generator/assets/joes_graphic.jpg
 ---
 [today]
 
-
 [name]
 [company]
 [street_address]
@@ -18,8 +17,8 @@ On behalf of everyone at Joe’s Movement Emporium, I want to thank you for your
 Your sponsorship sustains our program impact and helps us reach a greater audience. We are truly grateful for your support as a major donor.
 
 *Please retain this letter for your records as it confirms that no gifts or services were received in exchange for your donation, which is fully tax-deductible.* 
-
 I hope you enjoyed the Cultural Arts Festival!
+
 Yours truly,
 
 [/Users/xanderdelossantos/dev/letter_generator/assets/signature.png|10]
@@ -32,4 +31,4 @@ Executive Director
 
 
 
-[/Users/xanderdelossantos/dev/letter_generator/assets/letter_graphic.png|30]
+[/Users/xanderdelossantos/dev/letter_generator/assets/letter_graphic.png|25]
