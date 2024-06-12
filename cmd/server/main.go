@@ -41,17 +41,25 @@ func main() {
 	}
 	defer l.Close()
 
-    workDir, _ := os.Getwd()
-    filesDir := http.Dir(filepath.Join(workDir, "static"))
-    FileServer(r, "/s", filesDir)
+	workDir, _ := os.Getwd()
+	filesDir := http.Dir(filepath.Join(workDir, "static"))
+	FileServer(r, "/s", filesDir)
 
 	r.Get("/", func(w http.ResponseWriter, r *http.Request) {
-        templ.Handler(views.Index("/input")).ServeHTTP(w, r)
+		templ.Handler(views.Index("/input")).ServeHTTP(w, r)
+	})
+	r.Get("/about", func(w http.ResponseWriter, r *http.Request) {
+		hx_request := r.Header.Get("HX-Request")
+		if len(hx_request) > 0 {
+			templ.Handler(views.About()).ServeHTTP(w, r)
+			return
+		}
+		templ.Handler(views.Index("/about")).ServeHTTP(w, r)
 	})
 
-    r.Mount("/input", inputRouter{}.Routes())
-    r.Mount("/template", templateRouter{}.Routes())
-    r.Mount("/generate", generateRouter{}.Routes())
+	r.Mount("/input", inputRouter{}.Routes())
+	r.Mount("/template", templateRouter{}.Routes())
+	r.Mount("/generate", generateRouter{}.Routes())
 
 	addr := strings.Split(l.Addr().String(), ":")[3]
 

@@ -39,7 +39,7 @@ func main() {
 		wg.Add(1)
 		go func(l *l.Letter) {
 			defer wg.Done()
-			output_path = l.Generate()
+			output_path, _ = l.Generate()
 		}(&letter)
 	}
 

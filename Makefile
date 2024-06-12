@@ -1,5 +1,10 @@
+MAKEFLAGS += -j2
+
 tailwind:
 	npx tailwindcss -i ./cmd/server/static/input.css -o ./cmd/server/static/styles.css -c ./cmd/server/tailwind.config.js -m --watch
+
+air:
+	cd ./cmd/server/ && air
 
 server: build_server
 	./bin/server

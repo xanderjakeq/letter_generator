@@ -32,34 +32,38 @@ func (rt generateRouter) Generate(w http.ResponseWriter, r *http.Request) {
 
 	if err != nil {
 		templ.Handler(views.Error(err.Error())).ServeHTTP(w, r)
-	} else {
-		var output_path string
-        var err error
-
-		var wg sync.WaitGroup
-		for _, letter := range letters {
-			wg.Add(1)
-			go func(l *l.Letter) {
-				defer wg.Done()
-				output_path, err = l.Generate()
-			}(&letter)
-		}
-
-		wg.Wait()
-
-        if err != nil {
-            templ.Handler(views.Error(err.Error())).ServeHTTP(w, r)
-            return
-        }
-
-		cmd := exec.Command("open", output_path)
-		err = cmd.Run()
-
-        if err != nil {
-            templ.Handler(views.Error(err.Error())).ServeHTTP(w, r)
-            return
-        }
-
-		templ.Handler(views.Generate()).ServeHTTP(w, r)
+		return
 	}
+	var output_path string
+
+	var wg sync.WaitGroup
+	for _, letter := range letters {
+		wg.Add(1)
+		go func(l *l.Letter) {
+			defer wg.Done()
+			output_path, err = l.Generate()
+		}(&letter)
+	}
+
+	wg.Wait()
+
+	if err != nil {
+		templ.Handler(views.Error(err.Error())).ServeHTTP(w, r)
+		return
+	}
+
+	cmd := exec.Command("open", output_path)
+	err = cmd.Run()
+
+	if err != nil {
+		templ.Handler(views.Error(err.Error())).ServeHTTP(w, r)
+		return
+	}
+
+	//templ.Handler(views.Generate()).ServeHTTP(w, r)
+	http.Redirect(w, r, "/input", http.StatusTemporaryRedirect)
+}
+
+func (rt generateRouter) Download(path string) {
+	// todo download directory
 }

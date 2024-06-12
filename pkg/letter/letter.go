@@ -48,9 +48,9 @@ func (l *Letter) Generate() (string, error) {
 	today := time.Now().Local().Format("January 02, 2006")
 	template, err := getTemplate(l.Template_file_name)
 
-    if err != nil {
-        return "", err
-    }
+	if err != nil {
+		return "", err
+	}
 
 	l.GetMaroto(template)
 
@@ -59,18 +59,18 @@ func (l *Letter) Generate() (string, error) {
 	cwd, err := os.Executable()
 
 	if err != nil {
-        return "", err
+		return "", err
 	}
 
-    cwd_arr := strings.Split(cwd, "/")
-    cwd = strings.Join(cwd_arr[:len(cwd_arr) - 1], "/")
+	cwd_arr := strings.Split(cwd, "/")
+	cwd = strings.Join(cwd_arr[:len(cwd_arr)-1], "/")
 
 	dir_name := fmt.Sprintf("output_%s", strings.ReplaceAll(today, " ", "_"))
 	path := fmt.Sprintf("%s/%s", cwd, dir_name)
 	err = os.MkdirAll(path, os.ModePerm)
 
 	if err != nil {
-        return "", err
+		return "", err
 	}
 
 	if l.document == nil {
@@ -85,7 +85,7 @@ func (l *Letter) Generate() (string, error) {
 			rand.IntN(10000)))
 
 	if err != nil {
-        return "", err
+		return "", err
 	}
 
 	return path, nil

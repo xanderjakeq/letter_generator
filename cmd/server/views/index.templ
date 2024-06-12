@@ -11,7 +11,10 @@ templ layout() {
 			<script src="/s/htmx.js"></script>
 		</head>
 		<body hx-boost="true" class="bg-neutral-900 text-amber-50">
-			<div class="w-3/4 flex flex-col justify-start m-auto">
+			<div
+				class="w-3/4 flex flex-col justify-start m-auto
+				my-5"
+			>
 				{ children... }
 			</div>
 		</body>
@@ -20,12 +23,27 @@ templ layout() {
 
 templ Index(path string) {
 	@layout() {
+		<h1 class="text-5xl">
+			Letter Generator
+		</h1>
 		<nav class="w-full flex gap-5 my-5">
 			<a href="/input" hx-target="#main" hx-swap="innerHTML">input</a>
 			<a href="/template" hx-target="#main" hx-swap="innerHTML">templates</a>
+			<a href="/about" hx-target="#main" hx-swap="innerHTML">about</a>
 		</nav>
 		<main id="main" hx-get={ path } hx-trigger="load" hx-target="#main" hx-swap="innerHTML"></main>
 	}
+}
+
+templ About() {
+	<p>a tool to speed up creating thank-you letters.</p>
+	<p>
+		learn more:
+		<a
+			href="https://github.com/xanderjakeq/letter_generator"
+			class="!text-indigo-400 hover:!text-indigo-500"
+		>github.com/xanderjakeq/letter_generator</a>
+	</p>
 }
 
 templ Input() {
@@ -34,26 +52,35 @@ templ Input() {
 	<form action="/generate" hx-push-url="false" method="post" hx-target="#success" hx-swap="innerHTML">
 		<textarea
 			required
+			id="input"
+			placeholder="template_name
+business_name or -
+street address
+city, state zip
+donation_amount date"
 			name="input"
 			type="text"
 			class="w-full h-96 rounded text-neutral-900 p-3"
 		></textarea>
-		<input
-			type="submit"
-			value="generate"
-			class="cursor-pointer rounded-md bg-indigo-500 active:bg-indigo-700 px-2"
-		/>
+		<input type="submit" value="generate" class="cursor-pointer rounded-md bg-indigo-500 active:bg-indigo-700 px-2"/>
 	</form>
+	<script>
+	{
+		let input = document.getElementById("input");
+		input.value = localStorage.getItem('input') || "";
+
+		htmx.on('keydown', function () {
+			localStorage.setItem('input', input.value)
+		})
+	}
+</script>
 }
 
 templ Template(dir *string, templates *[]string) {
 	<h3 class="text-xl my-5">Templates</h3>
-	<a
-		href="/template/opendir"
-		hx-push-url="false"
-		class="!text-indigo-400
-    break-words hover:!text-indigo-500 break-words"
-	>at { *dir }</a>
+	<a href="/template/opendir" hx-push-url="false" class="!text-indigo-400 hover:!text-indigo-500 break-words">
+		at { *dir }
+	</a>
 	<ul>
 		for _, template := range *templates {
 			<li id="{template}">{ template }</li>
