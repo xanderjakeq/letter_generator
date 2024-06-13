@@ -1,17 +1,15 @@
 # letter generator
-
 spend less time editing letter templates in ms word.
 
 ## requirements
 
-- user input for required information
-- user can create/save templates
-- generate pdf files from user input with some naming convention
+- [x] user input for required information
+- [ ] user can create/save templates
+- [x] generate pdf files from user input with some naming convention
 
 - easy to use for non technical user
-    - i want this be an standalone executable bypass complexity of
-      deploying/managing a website
-    - explore later
+    - distribute as zip with executables?
+    - deploy to cloud, then send pdfs for download?
 
 ## usage
 
@@ -23,7 +21,7 @@ create `.txt` files in the `templates/` folder
 bg: /bg_path/bg.png
 ---
 
-[name] // can have multiple names separated by `&` like `first last & first last & first last`
+[full_names] 
 [first_names]
 [company]
 [street_address]
@@ -38,13 +36,14 @@ bg: /bg_path/bg.png
 [./image_path.jpg|10]
 [/another_image_path.jpg|30]
 
-*bold text*
 
+//text styling
+*bold text*
 `small text`
 ```
 all between `---` are for setup
 
-all valid variables like `[name]` will be replaced with value from the entry
+all valid variables like `[full_names]` will be replaced with value from the entry
 file. others will be treated as a path to an image. the `|30` for the image path
 is the custom height (10 by default). everything else will be kept
 
@@ -56,7 +55,7 @@ write the input file and save it as `whatever.txt`
 format:
 ```
 template_file_name
-name
+full_names // can have multiple names separated by `&` like `first last & first last & first last`
 company_name (`-` if none)
 street_address
 city_address
@@ -64,7 +63,7 @@ donation_amount donation_date
 donation_amount donation_date //there can be more than 1 donation
 
 template_file_name
-firstname|nickname lastname & firstname|nickname lastname //if name or nickname is more than one word, use underscore like `John_Paul` or `Mr._nickname`
+firstname|nickname lastname & firstname|nickname lastname 
 company_name (`-` if none)
 street_address
 city_address
@@ -72,14 +71,15 @@ donation_amount donation_date
 
 ...
 ```
-each entry separated by a an empty line
+entries separated by a an empty line
 
-to add a nickname, to use instead of the firstname, do `firstname|nickname
-lastname` on the name line
+to add a nickname to use instead of the firstname, do `firstname|nickname
+lastname` on the `[full_names]` line. if the firstname or nickname is more than
+one word, use underscore like `John_Paul` or `Mr._J`
 
 generate pdfs
 ```
-./letter_generator ./whatever.txt
+./path_to_letter_generator_executable ./whatever.txt
 ```
 
 output pdfs are placed in a directory named `output_today's_date/`
