@@ -151,8 +151,7 @@ func (l *Letter) renderTemplate(t template, today string) {
 
 		var val string
 
-		switch slices.Contains(valid_fields, field_pre) {
-		case true:
+		if slices.Contains(valid_fields, field_pre) {
 			switch field_pre {
 			case valid_fields[0]:
 				val = l.Name[0]
@@ -189,8 +188,7 @@ func (l *Letter) renderTemplate(t template, today string) {
 					val = "missing"
 				}
 			}
-
-		case false:
+		} else {
 			val = trim_field
 		}
 
@@ -209,11 +207,10 @@ func (l *Letter) renderTemplate(t template, today string) {
 
 	text_prop_emphasis := text_prop
 	text_prop_emphasis.Style = fontstyle.BoldItalic
-
 	text_prop_small := text_prop
 	text_prop_small.Size = 9
 
-	// Todo: should i keep this or leave this spacing to the template
+	// TODO: should i keep this or leave this spacing to the template
 	l.maroto.AddRow(40)
 
 	for _, block := range strings.Split(t.Content, "\n\n") {
