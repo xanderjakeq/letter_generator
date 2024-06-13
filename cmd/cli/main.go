@@ -14,26 +14,20 @@ func main() {
 	letters := make([]l.Letter, 0)
 
 	if len(os.Args) > 1 {
-		if os.Args[1] == "serve" {
-			log.Print("running server on")
-		} else {
-			input_path := os.Args[1]
+		input_path := os.Args[1]
+		bytes, err := os.ReadFile(input_path)
 
-			byte, err := os.ReadFile(input_path)
-
-			if err != nil {
-				log.Fatal(err)
-			}
-
-			helpers.ReadInput(&letters, byte)
+		if err != nil {
+			log.Fatal(err)
 		}
+
+		helpers.ReadInput(&letters, bytes)
 	} else {
 		log.Fatal("input file path required. example: './input.txt'")
 	}
 
 	var output_path string
 	var wg sync.WaitGroup
-
 	var err error
 
 	for _, letter := range letters {
