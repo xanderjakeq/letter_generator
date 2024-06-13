@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"letter_generator/pkg/helpers"
 	l "letter_generator/pkg/letter"
 	"log"
 	"os"
@@ -21,7 +20,7 @@ func main() {
 			log.Fatal(err)
 		}
 
-		helpers.ReadInput(&letters, bytes)
+		l.ReadInput(&letters, bytes)
 	} else {
 		log.Fatal("input file path required. example: './input.txt'")
 	}

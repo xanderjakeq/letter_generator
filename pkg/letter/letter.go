@@ -1,6 +1,7 @@
 package letter
 
 import (
+	"errors"
 	"fmt"
 	"log"
 	"os"
@@ -8,6 +9,8 @@ import (
 	"strconv"
 	"strings"
 	"time"
+
+	"letter_generator/pkg/helpers"
 
 	"math/rand/v2"
 
@@ -260,4 +263,57 @@ func (l *Letter) renderTemplate(t template, today string) {
 	}
 
 	l.document = document
+}
+
+func ReadInput(l *[]Letter, input []byte) error {
+	file_strings := strings.Split(strings.Trim(string(input), "\n"), "\n\n")
+	_, templates := helpers.GetTemplateNames()
+
+	for _, data := range file_strings {
+		letter_data := strings.Split(data, "\n")
+
+		for i, l_data := range letter_data {
+			letter_data[i] = strings.Trim(l_data, "\n\r")
+		}
+
+		if !slices.Contains(templates, letter_data[0]) {
+			return errors.New(fmt.Sprintf("can't find template: %s", letter_data[0]))
+		}
+
+		if len(letter_data) < 6 {
+			return errors.New("incomplete input")
+		}
+
+		donation_strings := letter_data[5:]
+		donations := make([]Donation, 0)
+
+		for _, donation_string := range donation_strings {
+			donation := strings.Split(donation_string, " ")
+			donation_amount, err := strconv.ParseFloat(donation[0], 32)
+
+			if err != nil {
+				return errors.New(fmt.Sprintf("invalid donation amount: %s", donation[0]))
+			}
+
+			if len(donation) < 2 {
+				return errors.New("can't render date, separate donation amount and date like '100 2/5/2024'")
+			}
+			if len(donation[1]) == 0 {
+				return errors.New("empty date")
+			}
+
+			donations = append(donations, Donation{Amount: float32(donation_amount), Date: donation[1]})
+		}
+
+		*l = append(*l, Letter{
+			Template_file_name: letter_data[0],
+			Name:               helpers.ProcessNames(letter_data[1]),
+			Company:            letter_data[2],
+			Street_address:     letter_data[3],
+			City_address:       letter_data[4],
+			Donations:          donations,
+		})
+	}
+
+	return nil
 }

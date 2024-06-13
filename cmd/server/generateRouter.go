@@ -9,7 +9,6 @@ import (
 	"github.com/go-chi/chi/v5"
 
 	"letter_generator/cmd/server/views"
-	"letter_generator/pkg/helpers"
 	l "letter_generator/pkg/letter"
 )
 
@@ -29,15 +28,16 @@ func (rt generateRouter) Generate(w http.ResponseWriter, r *http.Request) {
 
 	letters := make([]l.Letter, 0)
 
-	err := helpers.ReadInput(&letters, input)
+	err := l.ReadInput(&letters, input)
 
 	if err != nil {
 		templ.Handler(views.Error(err.Error())).ServeHTTP(w, r)
 		return
 	}
-	var output_path string
 
+	var output_path string
 	var wg sync.WaitGroup
+
 	for _, letter := range letters {
 		wg.Add(1)
 		go func(l *l.Letter) {
