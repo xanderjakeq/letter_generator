@@ -63,9 +63,8 @@ city_address
 donation_amount donation_date
 donation_amount donation_date //there can be more than 1 donation
 
-
 template_file_name
-firstname|nickname lastname & firstname|nickname lastname
+firstname|nickname lastname & firstname|nickname lastname //if name or nickname is more than one word, use underscore like `John_Paul` or `Mr._nickname`
 company_name (`-` if none)
 street_address
 city_address

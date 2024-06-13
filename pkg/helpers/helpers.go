@@ -73,11 +73,12 @@ func processNames(name_string string) [2]string {
 		firstname := fullname_split[0]
 		nickname := strings.Split(firstname, "|")
 
-		// TODO: handle multiple word nicknames
 		if len(nickname) == 2 {
-			firstnames = append(firstnames, nickname[1])
+			clean_nickname := strings.ReplaceAll(nickname[1], "_", " ")
+			firstnames = append(firstnames, clean_nickname)
 		} else {
-			firstnames = append(firstnames, firstname)
+			clean_firstname := strings.ReplaceAll(firstname, "_", " ")
+			firstnames = append(firstnames, clean_firstname)
 		}
 
 		fullname_split[0] = nickname[0]
