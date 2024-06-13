@@ -3,7 +3,7 @@ bg: /Users/xanderdelossantos/dev/letter_generator/assets/joes_graphic.jpg
 ---
 [today]
 
-[name]
+[full_names]
 [company]
 [street_address]
 [city_address]

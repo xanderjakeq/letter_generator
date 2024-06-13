@@ -125,7 +125,7 @@ func (l *Letter) GetMaroto(t template) {
 
 var valid_fields = []string{
 	"first_names",
-	"name",
+	"full_names",
 	"company",
 	"street_address",
 	"city_address",
