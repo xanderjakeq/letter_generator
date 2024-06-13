@@ -15,6 +15,7 @@ import (
 	"github.com/go-chi/chi/v5/middleware"
 
 	"github.com/xanderjakeq/letter_generator/cmd/server/views"
+	"github.com/xanderjakeq/letter_generator/pkg/helpers"
 )
 
 func main() {
@@ -41,7 +42,7 @@ func main() {
 	}
 	defer l.Close()
 
-	workDir, _ := os.Getwd()
+	workDir, _ := helpers.GetRootDir()
 	filesDir := http.Dir(filepath.Join(workDir, "static"))
 	FileServer(r, "/s", filesDir)
 
@@ -63,7 +64,7 @@ func main() {
 
 	addr := strings.Split(l.Addr().String(), ":")[3]
 
-	fmt.Printf("listening at port: %s\n", addr)
+	fmt.Printf("listening at port: localhost:%s\n", addr)
 	http.Serve(l, r)
 }
 
@@ -73,6 +74,8 @@ func FileServer(r chi.Router, path string, root http.FileSystem) {
 	if strings.ContainsAny(path, "{}*") {
 		panic("FileServer does not permit any URL parameters.")
 	}
+
+	fmt.Println(root)
 
 	if path != "/" && path[len(path)-1] != '/' {
 		r.Get(path, http.RedirectHandler(path+"/", 301).ServeHTTP)
