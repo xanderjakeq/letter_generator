@@ -10,7 +10,7 @@ import (
 	"strings"
 	"time"
 
-	"letter_generator/pkg/helpers"
+	"github.com/xanderjakeq/letter_generator/pkg/helpers"
 
 	"math/rand/v2"
 

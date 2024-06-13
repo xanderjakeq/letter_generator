@@ -6,7 +6,7 @@ import (
 	"github.com/a-h/templ"
 	"github.com/go-chi/chi/v5"
 
-	"letter_generator/cmd/server/views"
+	"github.com/xanderjakeq/letter_generator/cmd/server/views"
 )
 
 type inputRouter struct{}
@@ -25,5 +25,5 @@ func (rt inputRouter) Landing(w http.ResponseWriter, r *http.Request) {
 		templ.Handler(views.Input()).ServeHTTP(w, r)
 		return
 	}
-    templ.Handler(views.Index("/input")).ServeHTTP(w, r)
+	templ.Handler(views.Index("/input")).ServeHTTP(w, r)
 }

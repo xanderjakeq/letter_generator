@@ -8,8 +8,8 @@ import (
 	"github.com/a-h/templ"
 	"github.com/go-chi/chi/v5"
 
-	"letter_generator/cmd/server/views"
-	l "letter_generator/pkg/letter"
+	"github.com/xanderjakeq/letter_generator/cmd/server/views"
+	l "github.com/xanderjakeq/letter_generator/pkg/letter"
 )
 
 type generateRouter struct{}

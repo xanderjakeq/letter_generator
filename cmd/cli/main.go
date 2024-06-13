@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	l "letter_generator/pkg/letter"
+	l "github.com/xanderjakeq/letter_generator/pkg/letter"
 	"log"
 	"os"
 	"os/exec"

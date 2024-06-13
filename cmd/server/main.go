@@ -14,7 +14,7 @@ import (
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
 
-	"letter_generator/cmd/server/views"
+	"github.com/xanderjakeq/letter_generator/cmd/server/views"
 )
 
 func main() {

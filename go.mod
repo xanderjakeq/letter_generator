@@ -1,4 +1,4 @@
-module letter_generator
+module github.com/xanderjakeq/letter_generator
 
 go 1.22.2
 
