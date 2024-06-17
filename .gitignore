@@ -6,3 +6,5 @@ bin/*
 cmd/server/tmp
 *_templ.go
 tmp
+static
+pdf_output

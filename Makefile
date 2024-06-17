@@ -3,9 +3,20 @@ MAKEFLAGS += -j2
 tailwind:
 	npx tailwindcss -i ./cmd/server/static/input.css -o ./cmd/server/static/styles.css -c ./cmd/server/tailwind.config.js -m --watch
 
-air:
+air: clean_bin
 	ln -s ./cmd/server/static/ ./bin/static
 	cd ./cmd/server/ && air
+
+export_server: build_server clean_export
+	mkdir output
+	mkdir ./output/bin
+	mkdir ./output/templates
+	cp ./bin/server ./output/bin/server
+	cp -r ./cmd/server/static/ ./output/static
+	cp -r ./templates/ ./output/templates/
+
+clean_export:
+	rm -rf ./output/
 
 server: build_server
 	./bin/server
@@ -23,5 +34,5 @@ copy_files:
 	cp -r ./cmd/server/static/ ./bin/static/
 
 clean_bin:
-	cd ./bin/ && rm -rf *
+	rm -rf ./bin/*
 
