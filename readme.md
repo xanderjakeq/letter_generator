@@ -49,9 +49,13 @@ is the custom height (10 by default). everything else will be kept
 
 paragraphs should be written in one line
 
-### cli
-write the input file and save it as `whatever.txt`
+### server
+download a release (should be at the top right on github >^)
 
+go to the bin folder and double click the server binary. copy paste this 
+link on your browser: http://localhost:3000
+
+### input format
 format:
 ```
 template_file_name
@@ -71,20 +75,37 @@ donation_amount donation_date
 
 ...
 ```
-entries separated by a an empty line
+entries separated by an empty line
 
 to add a nickname to use instead of the firstname, do `firstname|nickname
 lastname` on the `[full_names]` line. if the firstname or nickname is more than
 one word, use underscore like `John_Paul` or `Mr._J`
 
+click generate and the output folder should open.
+
+### cli
+write the input file and save it as `whatever.txt`
+
+the same import format applies
+
 generate pdfs
 ```
 ./path_to_letter_generator_executable ./whatever.txt
 ```
-
-output pdfs are placed in a directory named `output_today's_date/`
+output pdfs are placed in a directory named `pdf_output/date/`
 
 ## dev
+
+install: go, make, air
+```
+go mod download #install deps
+
+make air #run air to watch server files 
+make tailwind #run tailwind cli and watch for file changes in server dir
+
+make build #build cli and server binaries
+make export_server #build and copy binary and static files to `output/` dir
+```
 
 [maroto](https://github.com/johnfercher/maroto)
 - generate pdfs
