@@ -20,14 +20,14 @@ import (
 
 func main() {
 
-	mode := "prod"
+	mode := "dev"
 	if len(os.Args) >= 2 {
 		mode = os.Args[1]
 	}
 
-	port := ":0"
-	if mode == "dev" {
-		port = ":3000"
+	port := ":3000"
+	if mode == "prod" {
+		port = ":0"
 		if len(os.Args) == 3 {
 			port = fmt.Sprintf(":%s", os.Args[2])
 		}
