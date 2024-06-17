@@ -12,8 +12,6 @@ import (
 
 	"github.com/xanderjakeq/letter_generator/pkg/helpers"
 
-	"math/rand/v2"
-
 	"github.com/johnfercher/maroto/v2/pkg/config"
 	"github.com/johnfercher/maroto/v2/pkg/consts/extension"
 	"github.com/johnfercher/maroto/v2/pkg/consts/fontfamily"
@@ -67,9 +65,9 @@ func (l *Letter) Generate() (string, error) {
 	}
 
 	cwd_arr := strings.Split(cwd, "/")
-	cwd = strings.Join(cwd_arr[:len(cwd_arr)-1], "/")
+	cwd = strings.Join(cwd_arr[:len(cwd_arr)-2], "/")
 
-	dir_name := fmt.Sprintf("output_%s", strings.ReplaceAll(today, " ", "_"))
+	dir_name := fmt.Sprintf("pdf_output/%s", strings.ReplaceAll(today, " ", "_"))
 	path := fmt.Sprintf("%s/%s", cwd, dir_name)
 	err = os.MkdirAll(path, os.ModePerm)
 
@@ -82,11 +80,12 @@ func (l *Letter) Generate() (string, error) {
 	}
 
 	err = l.document.Save(
-		fmt.Sprintf("%s/ty_%s_%s_%d.pdf",
+		fmt.Sprintf("%s/%s_%s_%s.pdf",
 			path,
+			l.Template_file_name,
 			l.Name[1],
 			today,
-			rand.IntN(10000)))
+		))
 
 	if err != nil {
 		return "", err
