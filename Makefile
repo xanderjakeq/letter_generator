@@ -8,12 +8,13 @@ air: clean_bin
 	cd ./cmd/server/ && air
 
 export_server: build_server clean_export
-	mkdir output
-	mkdir ./output/bin
-	mkdir ./output/templates
-	cp ./bin/server ./output/bin/server
-	cp -r ./cmd/server/static/ ./output/static
-	cp -r ./templates/ ./output/templates/
+	mkdir letter_generator
+	mkdir ./letter_generator/bin
+	mkdir ./letter_generator/templates
+	cp ./bin/server ./letter_generator/bin/server
+	cp -r ./cmd/server/static/ ./letter_generator/static
+	cp -r ./templates/ ./letter_generator/templates/
+
 
 clean_export:
 	rm -rf ./output/
@@ -31,7 +32,7 @@ build_cli:
 	go build -o ./bin/letter_generator ./cmd/cli/
 
 copy_files:
-	cp -r ./cmd/server/static/ ./bin/static/
+	cp -r ./cmd/server/static/ ./static/
 
 clean_bin:
 	rm -rf ./bin/*
