@@ -30,8 +30,9 @@ bg: /bg_path/bg.png
 [donation_date]
 [year]
 [donation_total]
-[donation-1] //used when there are more than 1 donation in the input block and will result to "$[donation_amount] on [donation_date]"
-[donation-2] //refers to the second donation and so on
+[donation-1] //used when there are more than 1 donation in the input block and 
+[donation-2] //will result to "$[donation_amount] on [donation_date]" 
+             //[donation-2] refers to the second donation and so on
 
 [./image_path.jpg|10]
 [/another_image_path.jpg|30]
@@ -47,13 +48,30 @@ all valid variables like `[full_names]` will be replaced with value from the ent
 file. others will be treated as a path to an image. the `|30` for the image path
 is the custom height (10 by default). everything else will be kept
 
+note:
+if using the sample templates in the sample folder, you will have to update the 
+paths to the images inside the assets folder.
+
+![image_info](assets/image_info.png)
+- navigate to the file in the finder and select it.
+- right-click or control-click on it and choose get info.
+- in the window that opens, highlight and copy(command + c) the where field.
+- paste it between `[]`
+- under name and extension replace spaces with underscore `_`
+- copy the new name and extension, paste it at the end of the path
+- should look like `[/Users/.../file_name.png]`
+
 paragraphs should be written in one line
 
-### server
-download a release (should be at the top right on github >^)
+### app/server
+pick a release [release](https://github.com/xanderjakeq/letter_generator/releases).
+download a the `.zip` file, unzip and move to location of your choice.
 
-go to the bin folder and double click the server binary. copy paste this 
-link on your browser: http://localhost:3000
+go to the bin folder inside `letter_generator` and double click the server binary. 
+copy paste this link on your browser: http://localhost:3000
+
+for convenience, add the server executable file to the dock
+![add_server_to_dock](assets/add_server_to_dock.gif)
 
 ### input format
 format:
