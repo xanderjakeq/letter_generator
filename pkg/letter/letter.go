@@ -13,7 +13,7 @@ import (
 	"github.com/xanderjakeq/letter_generator/pkg/helpers"
 
 	"github.com/johnfercher/maroto/v2/pkg/config"
-	"github.com/johnfercher/maroto/v2/pkg/consts/extension"
+	//"github.com/johnfercher/maroto/v2/pkg/consts/extension"
 	"github.com/johnfercher/maroto/v2/pkg/consts/fontfamily"
 	"github.com/johnfercher/maroto/v2/pkg/consts/fontstyle"
 	"github.com/johnfercher/maroto/v2/pkg/consts/pagesize"
@@ -96,27 +96,38 @@ func (l *Letter) Generate() (string, error) {
 
 func (l *Letter) GetMaroto(t template) {
 	// Todo: move setup processing to template struct
-	bg_path := strings.Trim(strings.Split(t.Setup, ":")[1], " \n")
-	bytes, err := os.ReadFile(bg_path)
+	// handle multiple setup variables
 
-	if err != nil {
-		log.Fatal(err)
-	}
+	//var bg_path string
+	//var bytes []byte = make([]byte, 0)
+	//var ext extension.Type
 
-	bg_ext := strings.Split(bg_path, ".")[1]
-	ext := extension.Png
+	//if len(strings.Split(t.Setup, ":")) > 1 {
+	//	bg_path = strings.Trim(strings.Split(t.Setup, ":")[1], " \n")
 
-	switch strings.ToLower(bg_ext) {
-	case "jpeg":
-		ext = extension.Jpeg
-	case "jpg":
-		ext = extension.Jpg
-	}
+	//	var err error
+	//	bytes, err = os.ReadFile(bg_path)
+
+	//	if err != nil {
+	//		log.Fatal(err)
+	//	}
+
+	//	bg_ext := strings.Split(bg_path, ".")[1]
+	//	ext = extension.Png
+
+	//	switch strings.ToLower(bg_ext) {
+	//	case "jpeg":
+	//		ext = extension.Jpeg
+	//	case "jpg":
+	//		ext = extension.Jpg
+	//	}
+
+	//}
 
 	cfg := config.NewBuilder().
 		WithPageSize(pagesize.Letter).
-		WithMargins(0, 15, 0).
-		WithBackgroundImage(bytes, ext).
+		WithMargins(0, 0, 0).
+		//WithBackgroundImage(bytes, ext).
 		Build()
 
 	l.maroto = maroto.New(cfg)
@@ -210,7 +221,7 @@ func (l *Letter) renderTemplate(t template, today string) {
 	text_prop_small.Size = 9
 
 	// TODO: should i keep this or leave this spacing to the template
-	l.maroto.AddRow(40)
+	//l.maroto.AddRow(40)
 
 	for _, block := range strings.Split(t.Content, "\n\n") {
 		leading := 5.0
@@ -240,7 +251,7 @@ func (l *Letter) renderTemplate(t template, today string) {
 						if len(height_split) > 1 {
 							height, _ = strconv.ParseFloat(height_split[1], 64)
 						}
-						l.maroto.AddRow(height, image.NewFromFileCol(12, path, props.Rect{Left: text_x, Percent: 100}))
+						l.maroto.AddRow(height, image.NewFromFileCol(20, path, props.Rect{Left: 5, Percent: 100}))
 					}
 					continue
 				}

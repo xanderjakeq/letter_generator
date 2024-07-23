@@ -1,6 +1,7 @@
 ---
-bg: /Users/xanderdelossantos/dev/letter_generator/assets/joes_graphic.jpg
 ---
+[/Users/xanderdelossantos/dev/letter_generator/assets/joes_graphic_header.jpg|30]
+
 [today]
 
 
@@ -33,3 +34,6 @@ Brooke Kidd
 Executive Director
 
 `World Arts Focus dba Joe’s Movement Emporium is a 501(c)(3) nonprofit organization, donations to which are tax deductible to the fullest extent allowed by law, EIN: 52-180-4860. A copy of our current financial statement is available by writing Joe’s Movement Emporium at 3309 Bunker Hill Road, Mount Rainier, MD 20712 or by calling 301-699-1819. Documents and information submitted under the Maryland Solicitations Act are also available, for the cost of postage and copies, from the Maryland Secretary of State, State House, Annapolis MD 21401, (410) 974-5534.`
+
+
+[/Users/xanderdelossantos/dev/letter_generator/assets/joes_graphic_footer.jpg|10]
